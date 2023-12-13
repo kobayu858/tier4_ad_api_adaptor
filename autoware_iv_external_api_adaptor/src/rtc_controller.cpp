@@ -340,3 +340,16 @@ void RTCController::setRTCAutoMode(
 
 #include <rclcpp_components/register_node_macro.hpp>
 RCLCPP_COMPONENTS_REGISTER_NODE(external_api::RTCController)
+
+#include "static_callback_isolated_executor.hpp"
+int main(int argc, char * argv[]) {
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<external_api::RTCController>(rclcpp::NodeOptions());
+  auto executor = std::make_shared<StaticCallbackIsolatedExecutor>();
+
+  executor->add_node(node);
+  executor->spin();
+
+  rclcpp::shutdown();
+  return 0;
+}
